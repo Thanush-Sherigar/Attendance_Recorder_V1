@@ -60,13 +60,19 @@ async function checkBackendHealth() {
 
 // Restore sessions from storage
 function restoreSessions() {
-    if (teacherToken) {
+    if (teacherToken && teacherToken !== 'null' && teacherToken !== 'undefined') {
         showTeacherDashboard();
         fetchMySessions();
+    } else {
+        teacherToken = null;
+        sessionStorage.removeItem('teacher_token');
     }
-    if (studentToken) {
+    if (studentToken && studentToken !== 'null' && studentToken !== 'undefined') {
         showStudentScreen('screen-student-scanner');
         document.getElementById('student-display-name').textContent = sessionStorage.getItem('student_name') || 'Student';
+    } else {
+        studentToken = null;
+        sessionStorage.removeItem('student_token');
     }
 }
 
@@ -118,6 +124,10 @@ async function teacherLogin() {
 
         const data = await response.json();
         if (response.ok) {
+            if (!data.roles || !data.roles.includes('ROLE_TEACHER')) {
+                alert("Login Failed: Access Denied. You do not have Teacher privileges.");
+                return;
+            }
             teacherToken = data.accessToken;
             sessionStorage.setItem('teacher_token', teacherToken);
             sessionStorage.setItem('teacher_name', data.username);
@@ -179,6 +189,7 @@ function teacherLogout() {
 
 // Fetch active sessions for the teacher
 async function fetchMySessions() {
+    if (!teacherToken || teacherToken === 'null' || teacherToken === 'undefined') return;
     try {
         const response = await fetch(`${API_BASE}/api/sessions/my-sessions`, {
             method: 'GET',
@@ -362,6 +373,10 @@ async function studentLogin() {
 
         const data = await response.json();
         if (response.ok) {
+            if (!data.roles || !data.roles.includes('ROLE_STUDENT')) {
+                alert("Login Failed: Access Denied. You do not have Student privileges.");
+                return;
+            }
             studentToken = data.accessToken;
             sessionStorage.setItem('student_token', studentToken);
             sessionStorage.setItem('student_name', data.username.split('@')[0]); // Use first part of email as display name
@@ -484,6 +499,11 @@ async function simulateQrScan() {
 
 // Fetch and render student attendance history (Page 32 Layout)
 async function fetchAttendanceHistory() {
+    if (!studentToken || studentToken === 'null' || studentToken === 'undefined') {
+        const listContainer = document.getElementById('attendance-history-list');
+        listContainer.innerHTML = '<div class="history-empty-state">Please log in to view history.</div>';
+        return;
+    }
     const listContainer = document.getElementById('attendance-history-list');
     listContainer.innerHTML = '<div class="history-empty-state">Loading logs...</div>';
 
