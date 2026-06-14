@@ -35,7 +35,7 @@ public class JwtUtils {
     }
 
     private SecretKey key() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+        return Keys.hmacShaKeyFor(jwtSecret.getBytes(java.nio.charset.StandardCharsets.UTF_8));
     }
 
     public String getUserNameFromJwtToken(String token) {
