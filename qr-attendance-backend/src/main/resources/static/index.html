@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Attendance System - Full Stack Simulator</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- QRious CDN for generating QR codes -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="app-main-header">
+        <div class="header-logo">
+            <span class="logo-icon">🎓</span>
+            <h1>Smart Attendance Pro</h1>
+        </div>
+        <div class="system-status">
+            <span class="status-indicator online"></span>
+            <span id="backend-status-text">Connecting to Backend...</span>
+        </div>
+    </header>
+
+    <main class="dashboard-grid">
+        <!-- TEACHER PORTAL SECTION (Left Side) -->
+        <section class="portal-panel teacher-portal-panel">
+            <div class="portal-header">
+                <div class="portal-badge">WEB PORTAL</div>
+                <h2>Teacher Session Control Dashboard</h2>
+                <p>Initiate, monitor, and control classroom attendance sessions.</p>
+            </div>
+
+            <div class="portal-card teacher-auth-card" id="teacher-login-card">
+                <h3>Teacher Authentication</h3>
+                <div class="form-group">
+                    <label for="teacher-username">Username / Email</label>
+                    <input type="text" id="teacher-username" value="teacher@dsce.edu.in" placeholder="teacher@dsce.edu.in">
+                </div>
+                <div class="form-group">
+                    <label for="teacher-password">Password</label>
+                    <input type="password" id="teacher-password" value="password123" placeholder="••••••••">
+                </div>
+                <button class="btn btn-primary" id="btn-teacher-login">LOG IN TO DASHBOARD</button>
+                <p class="auth-helper">Don't have an account? <span class="action-link" onclick="toggleTeacherRegister(true)">Register here</span></p>
+            </div>
+
+            <div class="portal-card teacher-auth-card hidden" id="teacher-register-card">
+                <h3>Teacher Registration</h3>
+                <div class="form-group">
+                    <label for="teacher-reg-username">Username / Email</label>
+                    <input type="text" id="teacher-reg-username" placeholder="teacher@dsce.edu.in">
+                </div>
+                <div class="form-group">
+                    <label for="teacher-reg-password">Password</label>
+                    <input type="password" id="teacher-reg-password" placeholder="••••••••">
+                </div>
+                <button class="btn btn-primary" id="btn-teacher-register">CREATE ACCOUNT</button>
+                <p class="auth-helper">Already have an account? <span class="action-link" onclick="toggleTeacherRegister(false)">Log in</span></p>
+            </div>
+
+            <div class="portal-card session-control-card hidden" id="teacher-dashboard-card">
+                <div class="teacher-profile-summary">
+                    <span class="user-avatar">👨‍🏫</span>
+                    <div>
+                        <h4 id="teacher-profile-name">Prof. Smitha G.V.</h4>
+                        <span class="user-role-label">Faculty Member</span>
+                    </div>
+                    <button class="btn btn-icon-only btn-danger-text" id="btn-teacher-logout" title="Log Out">✖</button>
+                </div>
+
+                <hr class="card-divider">
+
+                <div class="session-creator" id="session-setup-view">
+                    <h3>Start Attendance Session</h3>
+                    <div class="form-group">
+                        <label for="session-course">Course / Subject Name</label>
+                        <select id="session-course">
+                            <option value="Data Structures">Data Structures (MINT483)</option>
+                            <option value="Operating Systems">Operating Systems</option>
+                            <option value="Computer Networks">Computer Networks</option>
+                            <option value="Database Management">Database Management</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary btn-icon" id="btn-start-session">
+                        <span class="btn-icon-symbol">🔄</span> START SESSION (GENERATE QR)
+                    </button>
+                </div>
+
+                <div class="active-session-view hidden" id="session-active-view">
+                    <div class="alert-banner success-alert">
+                        <span class="alert-icon">✔️</span>
+                        <div class="alert-body">
+                            <strong>Session active!</strong> Students can scan the QR to mark attendance.
+                        </div>
+                        <div class="timer-badge" id="session-timer-badge">05:00</div>
+                    </div>
+
+                    <div class="session-display-columns">
+                        <div class="qr-code-box">
+                            <h4>Current Session QR Code</h4>
+                            <div class="qr-canvas-wrapper">
+                                <canvas id="session-qr-canvas"></canvas>
+                            </div>
+                            <p class="qr-helper-text">Scan this QR code from the student app to mark attendance.</p>
+                            <button class="btn btn-secondary btn-small" id="btn-force-refresh-qr">🔄 FORCE REFRESH QR</button>
+                        </div>
+
+                        <div class="session-meta-box">
+                            <h4>Session Info</h4>
+                            <div class="meta-row">
+                                <span class="meta-icon">👤</span>
+                                <div>
+                                    <span class="meta-label">Session ID</span>
+                                    <span class="meta-value font-monospace" id="session-id-display">-</span>
+                                </div>
+                            </div>
+                            <div class="meta-row">
+                                <span class="meta-icon">📘</span>
+                                <div>
+                                    <span class="meta-label">Course</span>
+                                    <span class="meta-value" id="session-course-display">-</span>
+                                </div>
+                            </div>
+                            <div class="meta-row">
+                                <span class="meta-icon">⏰</span>
+                                <div>
+                                    <span class="meta-label">Start Time</span>
+                                    <span class="meta-value" id="session-start-display">-</span>
+                                </div>
+                            </div>
+                            <div class="meta-row">
+                                <span class="meta-icon">⏳</span>
+                                <div>
+                                    <span class="meta-label">Expires In</span>
+                                    <span class="meta-value countdown-warning" id="session-expires-display">05:00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-danger btn-full" id="btn-end-session">🛑 END SESSION</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- STUDENT PORTAL SECTION (Right Side - Mobile Simulator) -->
+        <section class="portal-panel student-portal-panel">
+            <div class="portal-header">
+                <div class="portal-badge">NATIVE APP</div>
+                <h2>Student Mobile Simulator</h2>
+                <p>Simulates the Android smartphone interface for scanning QR code.</p>
+            </div>
+
+            <!-- SMARTPHONE WRAPPER -->
+            <div class="smartphone-frame">
+                <div class="phone-speaker"></div>
+                <div class="phone-screen">
+                    <!-- Android Status Bar -->
+                    <div class="phone-status-bar">
+                        <span class="phone-time" id="phone-clock">11:28</span>
+                        <div class="phone-icons">
+                            <span>📶</span>
+                            <span>🔋 86%</span>
+                        </div>
+                    </div>
+
+                    <!-- PHONE SCREEN CONTENT AREA -->
+                    <div class="phone-app-container">
+
+                        <!-- SCREEN 1: Student Login Portal -->
+                        <div class="app-screen active" id="screen-student-login">
+                            <div class="screen-header-accent">
+                                <div class="student-portal-avatar">
+                                    <span class="mortarboard">🎓</span>
+                                    <span class="check-subicon">✔️</span>
+                                </div>
+                                <h2>Smart Attendance</h2>
+                                <p>Student Login</p>
+                            </div>
+
+                            <div class="screen-body">
+                                <div class="form-group phone-form-group">
+                                    <label>Email (Institutional)</label>
+                                    <div class="input-with-icon">
+                                        <span class="input-icon">✉️</span>
+                                        <input type="text" id="student-username" value="rahul.dsce@dsce.edu.in" placeholder="rahul.dsce@dsce.edu.in">
+                                    </div>
+                                </div>
+                                <div class="form-group phone-form-group">
+                                    <label>Password</label>
+                                    <div class="input-with-icon">
+                                        <span class="input-icon">🔒</span>
+                                        <input type="password" id="student-password" value="password123" placeholder="••••••••">
+                                        <span class="toggle-password">👁️</span>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-phone-primary" id="btn-student-login">LOGIN</button>
+
+                                <p class="admin-helper">Don't have an account? <span class="action-link-purple" onclick="showStudentRegister(true)">Contact your administrator / Sign up</span></p>
+
+                                <!-- Login Successful Banner (Toggled on success) -->
+                                <div class="toast-card success-toast hidden" id="login-success-toast">
+                                    <div class="toast-icon">✔️</div>
+                                    <div class="toast-body">
+                                        <strong>Login successful!</strong><br>
+                                        Welcome, Rahul
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SCREEN 1B: Student Register Portal -->
+                        <div class="app-screen" id="screen-student-register">
+                            <div class="screen-header-accent">
+                                <h2>Smart Attendance</h2>
+                                <p>Student Sign Up</p>
+                            </div>
+
+                            <div class="screen-body">
+                                <div class="form-group phone-form-group">
+                                    <label>Institutional Email</label>
+                                    <div class="input-with-icon">
+                                        <span class="input-icon">✉️</span>
+                                        <input type="text" id="student-reg-username" placeholder="rahul.dsce@dsce.edu.in">
+                                    </div>
+                                </div>
+                                <div class="form-group phone-form-group">
+                                    <label>Password</label>
+                                    <div class="input-with-icon">
+                                        <span class="input-icon">🔒</span>
+                                        <input type="password" id="student-reg-password" placeholder="••••••••">
+                                    </div>
+                                </div>
+                                <button class="btn btn-phone-primary" id="btn-student-register">REGISTER</button>
+                                <p class="admin-helper">Already have an account? <span class="action-link-purple" onclick="showStudentRegister(false)">Log in</span></p>
+                            </div>
+                        </div>
+
+                        <!-- SCREEN 2: Attendance Control Scanner -->
+                        <div class="app-screen" id="screen-student-scanner">
+                            <div class="app-bar">
+                                <span class="menu-icon">☰</span>
+                                <h3>Smart Attendance</h3>
+                                <span class="profile-icon" id="btn-student-logout" title="Log Out">✖</span>
+                            </div>
+
+                            <div class="screen-body scanner-screen-body">
+                                <div class="student-profile-bar">
+                                    <span class="student-avatar-small">👤</span>
+                                    <div>
+                                        <h4 id="student-display-name">Rahul S.</h4>
+                                        <span class="student-id-subtext">USN: 1DS24MC108</span>
+                                    </div>
+                                </div>
+
+                                <div class="qr-scanner-visual-container">
+                                    <!-- Dynamic Simulated QR code display or target bracket -->
+                                    <div class="scanner-bracket-frame">
+                                        <div class="corner-bracket top-left"></div>
+                                        <div class="corner-bracket top-right"></div>
+                                        <div class="corner-bracket bottom-left"></div>
+                                        <div class="corner-bracket bottom-right"></div>
+                                        <div class="simulated-qr-matrix">
+                                            <!-- Simple visual mock representing QR scanning -->
+                                            <span class="qr-target-icon">📷</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="scanner-actions">
+                                    <h3>Mark Your Attendance</h3>
+                                    <p>Scan the QR code displayed in the classroom to mark your attendance.</p>
+                                    
+                                    <!-- Device Fingerprint Mock (for visual feedback) -->
+                                    <div class="device-fingerprint-indicator">
+                                        <span class="fingerprint-label">Simulated Device ID:</span>
+                                        <span class="fingerprint-value" id="student-device-id-display">device-pixel9-1ds24mc108</span>
+                                    </div>
+
+                                    <button class="btn btn-phone-primary btn-icon" id="btn-open-scanner">
+                                        <span>📷</span> OPEN QR SCANNER
+                                    </button>
+                                    <button class="btn btn-phone-secondary btn-icon" id="btn-view-history">
+                                        <span>⏳</span> VIEW ATTENDANCE HISTORY
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SCREEN 3: Attendance History Ledger View -->
+                        <div class="app-screen" id="screen-student-history">
+                            <div class="app-bar">
+                                <span class="back-arrow" id="btn-history-back">←</span>
+                                <h3>Attendance History</h3>
+                                <span></span>
+                            </div>
+
+                            <div class="screen-body history-screen-body">
+                                <div class="history-list" id="attendance-history-list">
+                                    <!-- Dynamic attendance items generated via JS -->
+                                    <div class="history-empty-state">
+                                        <span>📂</span>
+                                        <p>No attendance records found.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PHONE DIALOG OVERLAYS (Simulated Modals) -->
+                        <div class="phone-modal-overlay hidden" id="phone-dialog-overlay">
+                            <!-- DIALOG 1: SUCCESS -->
+                            <div class="phone-dialog-card hidden" id="dialog-success">
+                                <div class="dialog-icon success-icon">✔️</div>
+                                <h3>Attendance Marked</h3>
+                                <p>Your attendance has been recorded successfully in the database ledger.</p>
+                                <button class="btn btn-phone-primary" onclick="closePhoneDialog()">OK</button>
+                            </div>
+
+                            <!-- DIALOG 2: WINDOW CLOSED / ERROR (Page 34 / 35 Alert) -->
+                            <div class="phone-dialog-card hidden" id="dialog-window-closed">
+                                <div class="dialog-icon error-icon">⚠️</div>
+                                <h3 class="error-title">Attendance Window Closed</h3>
+                                <p>You are trying to mark attendance outside the allowed time window for this session.</p>
+                                <div class="time-window-box">
+                                    <div class="time-row">
+                                        <span class="time-label">Allowed Time:</span>
+                                        <span class="time-val" id="dialog-allowed-time">09:00 AM - 09:30 AM</span>
+                                    </div>
+                                    <div class="time-row">
+                                        <span class="time-label">Current Time:</span>
+                                        <span class="time-val" id="dialog-current-time">11:45 AM</span>
+                                    </div>
+                                </div>
+                                <button class="btn btn-phone-primary" onclick="closePhoneDialog()">OK</button>
+                            </div>
+
+                            <!-- DIALOG 3: GENERAL ERROR -->
+                            <div class="phone-dialog-card hidden" id="dialog-general-error">
+                                <div class="dialog-icon error-icon">❌</div>
+                                <h3 class="error-title" id="dialog-error-title">Cannot Mark Attendance</h3>
+                                <p id="dialog-error-message">Error: Invalid or expired QR code.</p>
+                                <button class="btn btn-phone-primary" onclick="closePhoneDialog()">OK</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Android Navigation Bar -->
+                    <div class="phone-navigation-bar">
+                        <span class="nav-btn" onclick="phoneBackNav()">◀</span>
+                        <span class="nav-btn" onclick="phoneHomeNav()">●</span>
+                        <span class="nav-btn">■</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-main-footer">
+        <p>© 2026 Smart Attendance Pro System. Developed in Kotlin/Java & Spring Boot. USN: 1DS24MC108.</p>
+    </footer>
+
+    <!-- Core simulator client logic -->
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+# Maven build files
+qr-attendance-backend/target/
+qr-attendance-backend/.mvn/wrapper/maven-wrapper.jar
+qr-attendance-backend/target/*
+
+# Android build files
+qr-attendance-android/.gradle/
+qr-attendance-android/local.properties
+qr-attendance-android/.idea/caches/
+qr-attendance-android/.idea/libraries/
+qr-attendance-android/.idea/workspace.xml
+qr-attendance-android/app/build/
+qr-attendance-android/build/
+qr-attendance-android/captures/
+qr-attendance-android/.externalNativeBuild/
+qr-attendance-android/.cxx/
+
+# General IDE & System files
+.vscode/
+.idea/
+*.class
+*.log
+*.jar
+*.war
+.DS_Store

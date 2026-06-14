@@ -1,0 +1,1166 @@
+/* ==========================================================================
+   SMART ATTENDANCE PRO - DESIGN SYSTEM & STYLING
+   ========================================================================== */
+
+/* --- CSS VARIABLES & TOKENS --- */
+:root {
+    --primary-color: #5b21b6;
+    --primary-light: #7c3aed;
+    --primary-dark: #4c1d95;
+    --accent-color: #8b5cf6;
+    --bg-dark: #0f172a;
+    --bg-card: #1e293b;
+    --bg-light: #f8fafc;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --text-light: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-color: #e2e8f0;
+    --border-dark: #334155;
+    --success-color: #10b981;
+    --success-bg: #d1fae5;
+    --danger-color: #ef4444;
+    --danger-bg: #fee2e2;
+    --warning-color: #f59e0b;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --font-family: 'Outfit', sans-serif;
+    --border-radius-lg: 16px;
+    --border-radius-md: 12px;
+    --border-radius-sm: 8px;
+    --phone-purple: #4A22B0;
+}
+
+/* --- RESET & BASIC STYLES --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: #0b0f19;
+    color: var(--text-light);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* --- HEADER & FOOTER --- */
+.app-main-header {
+    background-color: var(--bg-dark);
+    border-bottom: 1px solid var(--border-dark);
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    font-size: 28px;
+    background: linear-gradient(135deg, var(--accent-color), var(--primary-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header-logo h1 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    background: linear-gradient(to right, #ffffff, #c084fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.system-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #1e293b;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border-dark);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-indicator.online {
+    background-color: var(--success-color);
+    box-shadow: 0 0 8px var(--success-color);
+}
+
+.status-indicator.offline {
+    background-color: var(--danger-color);
+    box-shadow: 0 0 8px var(--danger-color);
+}
+
+.app-main-footer {
+    background-color: var(--bg-dark);
+    border-top: 1px solid var(--border-dark);
+    padding: 16px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: auto;
+}
+
+/* --- LAYOUT GRID --- */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 30px;
+    padding: 30px;
+    max-width: 1600px;
+    margin: 0 auto;
+    width: 100%;
+    align-items: start;
+}
+
+@media (max-width: 1100px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.portal-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.portal-header {
+    margin-bottom: 8px;
+}
+
+.portal-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    padding: 4px 10px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+}
+
+.portal-header h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.portal-header p {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+/* --- GENERAL CARDS & FORMS --- */
+.portal-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-dark);
+    border-radius: var(--border-radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-lg);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.portal-card:hover {
+    box-shadow: var(--shadow-xl);
+}
+
+.portal-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--accent-color);
+    padding-left: 10px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+    width: 100%;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.form-group input, .form-group select {
+    background-color: #0f172a;
+    border: 1px solid var(--border-dark);
+    color: var(--text-light);
+    padding: 12px;
+    border-radius: var(--border-radius-sm);
+    font-family: var(--font-family);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
+}
+
+.form-group input:focus, .form-group select:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
+}
+
+/* --- BUTTONS --- */
+.btn {
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-radius: var(--border-radius-sm);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background-color: var(--primary-light);
+    color: var(--text-light);
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background-color: var(--border-dark);
+    color: var(--text-light);
+    border: 1px solid #475569;
+}
+
+.btn-secondary:hover {
+    background-color: #475569;
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: var(--text-light);
+}
+
+.btn-danger:hover {
+    background-color: #dc2626;
+}
+
+.btn-danger-text {
+    background: transparent;
+    color: var(--danger-color);
+    padding: 6px;
+}
+
+.btn-danger-text:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+.btn-full {
+    width: 100%;
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 11px;
+    border-radius: 4px;
+}
+
+.btn-icon-only {
+    padding: 8px;
+    border-radius: 50%;
+}
+
+.action-link {
+    color: var(--accent-color);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.action-link:hover {
+    color: var(--primary-light);
+}
+
+.auth-helper {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 14px;
+}
+
+/* --- TEACHER DASHBOARD SPECIFICS --- */
+.teacher-profile-summary {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.user-avatar {
+    font-size: 36px;
+    background-color: var(--border-dark);
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.teacher-profile-summary h4 {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.user-role-label {
+    font-size: 12px;
+    color: var(--accent-color);
+    font-weight: 500;
+}
+
+.card-divider {
+    border: none;
+    border-top: 1px solid var(--border-dark);
+    margin: 20px 0;
+}
+
+#teacher-profile-logout {
+    margin-left: auto;
+}
+
+/* --- ACTIVE SESSION DISPLAY --- */
+.alert-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: var(--border-radius-md);
+    margin-bottom: 24px;
+    font-size: 14px;
+}
+
+.success-alert {
+    background-color: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #34d399;
+}
+
+.alert-body {
+    flex: 1;
+}
+
+.timer-badge {
+    background-color: var(--phone-purple);
+    color: var(--text-light);
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-family: monospace;
+    font-size: 14px;
+}
+
+.session-display-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+@media (max-width: 600px) {
+    .session-display-columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+.qr-code-box {
+    background-color: #0f172a;
+    border: 1px solid var(--border-dark);
+    border-radius: var(--border-radius-md);
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.qr-code-box h4, .session-meta-box h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    align-self: flex-start;
+    margin-bottom: 16px;
+}
+
+.qr-canvas-wrapper {
+    background-color: white;
+    padding: 14px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    display: inline-block;
+}
+
+#session-qr-canvas {
+    width: 180px;
+    height: 180px;
+    display: block;
+}
+
+.qr-helper-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.session-meta-box {
+    background-color: #0f172a;
+    border: 1px solid var(--border-dark);
+    border-radius: var(--border-radius-md);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.meta-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.meta-icon {
+    font-size: 20px;
+    background-color: var(--border-dark);
+    border-radius: 8px;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.meta-label {
+    display: block;
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.meta-value {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-light);
+}
+
+.font-monospace {
+    font-family: monospace;
+    font-size: 12px;
+}
+
+.countdown-warning {
+    color: var(--warning-color);
+    font-family: monospace;
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   STUDENT MOBILE APP SIMULATOR (SMARTPHONE FRAME)
+   ========================================================================== */
+.smartphone-frame {
+    width: 360px;
+    height: 740px;
+    background-color: #1e1e1e;
+    border: 12px solid #2e2e2e;
+    border-radius: 40px;
+    margin: 0 auto;
+    position: relative;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.phone-speaker {
+    width: 60px;
+    height: 6px;
+    background-color: #444;
+    border-radius: 3px;
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+}
+
+.phone-screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: var(--bg-light);
+    color: var(--text-primary);
+    overflow: hidden;
+}
+
+/* --- Android Status Bar --- */
+.phone-status-bar {
+    height: 24px;
+    background-color: var(--phone-purple);
+    color: white;
+    font-size: 11px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    font-weight: 600;
+    z-index: 20;
+}
+
+.phone-icons {
+    display: flex;
+    gap: 4px;
+}
+
+/* --- Android Navigation Bar --- */
+.phone-navigation-bar {
+    height: 40px;
+    background-color: black;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 20;
+}
+
+.nav-btn {
+    color: #888;
+    font-size: 14px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.nav-btn:hover {
+    color: white;
+}
+
+/* --- Screen Container --- */
+.phone-app-container {
+    flex: 1;
+    position: relative;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    z-index: 10;
+}
+
+.app-screen.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* --- Screen 1: Login Accent --- */
+.screen-header-accent {
+    background-color: var(--phone-purple);
+    color: white;
+    padding: 40px 24px 30px;
+    text-align: center;
+    border-bottom-left-radius: 100px 25px;
+    border-bottom-right-radius: 100px 25px;
+}
+
+.student-portal-avatar {
+    width: 72px;
+    height: 72px;
+    background-color: white;
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    position: relative;
+    box-shadow: var(--shadow-md);
+}
+
+.check-subicon {
+    font-size: 12px;
+    background-color: var(--success-color);
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border: 2px solid white;
+}
+
+.screen-header-accent h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.screen-header-accent p {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.screen-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.phone-form-group {
+    margin-bottom: 18px;
+}
+
+.phone-form-group label {
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon .input-icon {
+    position: absolute;
+    left: 12px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.input-with-icon input {
+    background-color: var(--bg-light);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 12px 12px 12px 40px;
+    font-size: 13px;
+    border-radius: var(--border-radius-sm);
+    outline: none;
+    width: 100%;
+}
+
+.input-with-icon input:focus {
+    border-color: var(--phone-purple);
+    background-color: white;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.btn-phone-primary {
+    background-color: var(--phone-purple);
+    color: white;
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 12px;
+    border-radius: 24px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    box-shadow: var(--shadow-md);
+    transition: background-color 0.2s;
+}
+
+.btn-phone-primary:hover {
+    background-color: #3b1991;
+}
+
+.btn-phone-secondary {
+    background-color: white;
+    color: var(--phone-purple);
+    border: 2px solid var(--phone-purple);
+    font-family: var(--font-family);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 11px;
+    border-radius: 24px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.2s;
+}
+
+.btn-phone-secondary:hover {
+    background-color: rgba(74, 34, 176, 0.05);
+}
+
+.admin-helper {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-align: center;
+    margin-top: 20px;
+    line-height: 1.4;
+}
+
+.action-link-purple {
+    color: var(--phone-purple);
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* --- Toast Notification --- */
+.toast-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: var(--border-radius-sm);
+    margin-top: 20px;
+    font-size: 12px;
+    animation: slideUp 0.3s ease;
+}
+
+.success-toast {
+    background-color: var(--success-bg);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #065f46;
+}
+
+.toast-icon {
+    font-size: 16px;
+}
+
+/* --- Native App Bars --- */
+.app-bar {
+    height: 48px;
+    background-color: var(--phone-purple);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    box-shadow: var(--shadow-sm);
+}
+
+.app-bar h3 {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.menu-icon, .profile-icon, .back-arrow {
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* --- Screen 2: Attendance Control Scanner Screen --- */
+.scanner-screen-body {
+    padding: 16px;
+    background-color: #f8fafc;
+    justify-content: space-between;
+}
+
+.student-profile-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: white;
+    padding: 10px 14px;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+}
+
+.student-avatar-small {
+    font-size: 20px;
+    background-color: #e2e8f0;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.student-profile-bar h4 {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.student-id-subtext {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.qr-scanner-visual-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.scanner-bracket-frame {
+    width: 160px;
+    height: 160px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.corner-bracket {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-color: var(--phone-purple);
+    border-style: solid;
+    border-width: 0;
+}
+
+.top-left {
+    top: 0;
+    left: 0;
+    border-top-width: 4px;
+    border-left-width: 4px;
+    border-top-left-radius: 12px;
+}
+
+.top-right {
+    top: 0;
+    right: 0;
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-top-right-radius: 12px;
+}
+
+.bottom-left {
+    bottom: 0;
+    left: 0;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-bottom-left-radius: 12px;
+}
+
+.bottom-right {
+    bottom: 0;
+    right: 0;
+    border-bottom-width: 4px;
+    border-right-width: 4px;
+    border-bottom-right-radius: 12px;
+}
+
+.simulated-qr-matrix {
+    font-size: 44px;
+    color: #cbd5e1;
+    animation: scannerPulse 2s infinite ease-in-out;
+}
+
+.scanner-actions {
+    text-align: center;
+    background-color: white;
+    padding: 18px;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+}
+
+.scanner-actions h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.scanner-actions p {
+    font-size: 11px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+.device-fingerprint-indicator {
+    background-color: #f1f5f9;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 9px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.fingerprint-label {
+    color: var(--text-secondary);
+}
+
+.fingerprint-value {
+    font-family: monospace;
+    font-weight: 700;
+    color: var(--phone-purple);
+}
+
+/* --- Screen 3: Attendance History Page --- */
+.history-screen-body {
+    background-color: #f1f5f9;
+    padding: 12px;
+    overflow-y: auto;
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.history-empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-secondary);
+}
+
+.history-empty-state span {
+    font-size: 40px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.history-empty-state p {
+    font-size: 13px;
+}
+
+.attendance-card-item {
+    background-color: white;
+    border-radius: var(--border-radius-md);
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    animation: slideUp 0.2s ease;
+}
+
+.subject-icon-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--phone-purple);
+    color: white;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.attendance-card-info {
+    flex: 1;
+}
+
+.attendance-card-info h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.card-meta-detail {
+    font-size: 10px;
+    color: var(--text-secondary);
+    display: flex;
+    gap: 8px;
+}
+
+.status-badge-present {
+    background-color: #d1fae5;
+    color: #065f46;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+/* --- Simulated Dialog Modals --- */
+.phone-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(2px);
+    transition: opacity 0.2s ease;
+}
+
+.phone-dialog-card {
+    background-color: white;
+    border-radius: 20px;
+    padding: 24px;
+    width: 100%;
+    max-width: 290px;
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+    animation: dialogPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.dialog-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.success-icon {
+    background-color: var(--success-bg);
+    color: var(--success-color);
+}
+
+.error-icon {
+    background-color: var(--danger-bg);
+    color: var(--danger-color);
+}
+
+.phone-dialog-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.phone-dialog-card h3.error-title {
+    color: var(--danger-color);
+}
+
+.phone-dialog-card p {
+    font-size: 11px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    margin-bottom: 16px;
+}
+
+.time-window-box {
+    background-color: var(--danger-bg);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: var(--border-radius-sm);
+    padding: 10px;
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+.time-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    margin-bottom: 4px;
+}
+
+.time-row:last-child {
+    margin-bottom: 0;
+}
+
+.time-label {
+    color: #991b1b;
+    font-weight: 500;
+}
+
+.time-val {
+    color: #7f1d1d;
+    font-weight: 700;
+}
+
+/* --- HELPER CLASSES --- */
+.hidden {
+    display: none !important;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes dialogPop {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes scannerPulse {
+    0%, 100% {
+        opacity: 0.4;
+        transform: scale(0.95);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+}
