@@ -124,7 +124,7 @@ async function teacherLogin() {
 
         const data = await response.json();
         if (response.ok) {
-            teacherToken = data.accessToken;
+            teacherToken = data.token;
             sessionStorage.setItem('teacher_token', teacherToken);
             sessionStorage.setItem('teacher_name', data.username);
             showTeacherDashboard();
@@ -369,7 +369,7 @@ async function studentLogin() {
 
         const data = await response.json();
         if (response.ok) {
-            studentToken = data.accessToken;
+            studentToken = data.token;
             sessionStorage.setItem('student_token', studentToken);
             sessionStorage.setItem('student_name', data.username.split('@')[0]); // Use first part of email as display name
             sessionStorage.setItem('student_email', data.username);
