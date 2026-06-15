@@ -30,7 +30,6 @@ public class SessionController {
     private UserRepository userRepository;
 
     @PostMapping("/start")
-    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> startSession(@Valid @RequestBody CreateSessionRequest request) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User teacher = userRepository.findById(userDetails.getId()).orElseThrow();
@@ -49,7 +48,6 @@ public class SessionController {
     }
 
     @PostMapping("/refresh/{sessionId}")
-    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> refreshQrToken(@PathVariable Long sessionId) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         
@@ -69,7 +67,6 @@ public class SessionController {
     }
     
     @PostMapping("/end/{sessionId}")
-    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> endSession(@PathVariable Long sessionId) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         
@@ -90,7 +87,6 @@ public class SessionController {
     }
     
     @GetMapping("/my-sessions")
-    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<List<Session>> getMyActiveSessions() {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResponseEntity.ok(sessionRepository.findByTeacherIdAndActiveTrue(userDetails.getId()));

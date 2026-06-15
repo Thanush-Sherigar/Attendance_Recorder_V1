@@ -43,7 +43,6 @@ public class AttendanceController {
     private JwtUtils jwtUtils;
 
     @PostMapping("/scan")
-    @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<?> markAttendance(@Valid @RequestBody ScanQrRequest request) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User student = userRepository.findById(userDetails.getId()).orElseThrow();
@@ -142,7 +141,6 @@ public class AttendanceController {
     }
 
     @GetMapping("/history")
-    @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<?> getAttendanceHistory() {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<AttendanceRecord> records = attendanceRecordRepository.findByStudentIdOrderByScanTimeDesc(userDetails.getId());

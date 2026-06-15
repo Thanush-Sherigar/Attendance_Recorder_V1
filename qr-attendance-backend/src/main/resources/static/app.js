@@ -124,10 +124,6 @@ async function teacherLogin() {
 
         const data = await response.json();
         if (response.ok) {
-            if (!data.roles || !data.roles.includes('ROLE_TEACHER')) {
-                alert("Login Failed: Access Denied. You do not have Teacher privileges.");
-                return;
-            }
             teacherToken = data.accessToken;
             sessionStorage.setItem('teacher_token', teacherToken);
             sessionStorage.setItem('teacher_name', data.username);
@@ -373,10 +369,6 @@ async function studentLogin() {
 
         const data = await response.json();
         if (response.ok) {
-            if (!data.roles || !data.roles.includes('ROLE_STUDENT')) {
-                alert("Login Failed: Access Denied. You do not have Student privileges.");
-                return;
-            }
             studentToken = data.accessToken;
             sessionStorage.setItem('student_token', studentToken);
             sessionStorage.setItem('student_name', data.username.split('@')[0]); // Use first part of email as display name
